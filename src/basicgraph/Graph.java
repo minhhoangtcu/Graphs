@@ -1,12 +1,10 @@
 package basicgraph;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import util.GraphLoader;
 
@@ -121,8 +119,12 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 1
-		return null;
+		List<Integer> degreeOfVertices = new LinkedList<Integer>();
+		for (int i = 0; i < numVertices; i++) {
+			degreeOfVertices.add(getNeighbors(i).size() + getInNeighbors(i).size());
+		}
+		Collections.sort(degreeOfVertices, Collections.reverseOrder());
+		return degreeOfVertices;
 	}
 	
 	/**
