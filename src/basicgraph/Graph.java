@@ -123,7 +123,7 @@ public abstract class Graph {
 		for (int i = 0; i < numVertices; i++) {
 			degreeOfVertices.add(getNeighbors(i).size() + getInNeighbors(i).size());
 		}
-		Collections.sort(degreeOfVertices, Collections.reverseOrder());
+		Collections.sort(degreeOfVertices);
 		return degreeOfVertices;
 	}
 	
@@ -230,7 +230,7 @@ public abstract class Graph {
 
 	
 	public static void main (String[] args) {
-		GraphLoader.createIntersectionsFile("data/maps/myucsd.map", "data/intersections/myucsd.intersections");
+		GraphLoader.createIntersectionsFile("data/testdata/simpletest.map", "data/testdata/simpletest.intersections");
 		
 
 		// For testing of Part 1 functionality
@@ -252,6 +252,7 @@ public abstract class Graph {
 		
 		// You can test with real road data here.  Use the data files in data/maps
 		
+		System.out.println();
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
