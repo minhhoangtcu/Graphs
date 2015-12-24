@@ -145,7 +145,7 @@ public abstract class Graph {
 		if (numVertices <= 20) s += adjacencyString();
 		return s;
 	}
-
+	
 	/**
 	 * Generate string representation of adjacency list
 	 * @return the String
