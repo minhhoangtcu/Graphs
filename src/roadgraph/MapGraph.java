@@ -8,7 +8,9 @@
 package roadgraph;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -109,7 +111,7 @@ public class MapGraph {
 		if (from == null | to == null | !map.containsKey(from) | !map.containsKey(to) | length < 0) {
 			throw new IllegalArgumentException();
 		} else {
-			MapEdge edge = new MapEdge(from, to, roadName, roadType, length);
+			MapEdge edge = new MapEdge(map.get(from), map.get(to), roadName, roadType, length);
 			map.get(from).addEdge(edge);
 			numEdges++;
 		}
@@ -147,12 +149,35 @@ public class MapGraph {
 	 */
 	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal,
 			Consumer<GeographicPoint> nodeSearched) {
-		// TODO: Implement this method in WEEK 2
 
-		// Hook for visualization. See writeup.
-		// nodeSearched.accept(next.getLocation());
+		Queue<MapNode> queue = new LinkedList<>();
+		queue.add(map.get(start));
 
-		return null;
+		// Using breath first search to find the goal
+		MapNode node = null;
+		while (!queue.isEmpty()) {
+			node = queue.remove();
+			
+			if (node.getLocation() == goal)
+				break; // we found the goal
+			
+			LinkedList<MapEdge> edgesToExplore = node.getEdges();
+			for (MapEdge mapEdge : edgesToExplore) {
+				queue.add(mapEdge.getwTo()); // put more nodes to explore
+				mapEdge.getwTo().setBackTrack(mapEdge.getwFrom()); // set backtrack to the previous vert
+				nodeSearched.accept(mapEdge.getwTo().getLocation());
+			}
+
+		}
+		
+		// After finding the goal, backtrack to find the way back to the start node.
+		List<GeographicPoint> path = new LinkedList<>();
+		while (node != null) {
+			path.add(node.getLocation());
+			node = node.getBackTrack();
+		}
+
+		return path;
 	}
 
 	/**
@@ -242,7 +267,7 @@ public class MapGraph {
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", theMap);
 		System.out.println("DONE.");
-
+		
 		// You can use this method for testing.
 
 		/*
