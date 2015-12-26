@@ -8,6 +8,7 @@
 package roadgraph;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -151,21 +152,31 @@ public class MapGraph {
 			Consumer<GeographicPoint> nodeSearched) {
 
 		Queue<MapNode> queue = new LinkedList<>();
+		HashSet<MapNode> visisted = new HashSet<>();
+		
 		queue.add(map.get(start));
 
 		// Using breath first search to find the goal
 		MapNode node = null;
 		while (!queue.isEmpty()) {
 			node = queue.remove();
+			visisted.add(node);
 			
 			if (node.getLocation() == goal)
 				break; // we found the goal
 			
 			LinkedList<MapEdge> edgesToExplore = node.getEdges();
 			for (MapEdge mapEdge : edgesToExplore) {
-				queue.add(mapEdge.getwTo()); // put more nodes to explore
-				mapEdge.getwTo().setBackTrack(mapEdge.getwFrom()); // set backtrack to the previous vert
-				nodeSearched.accept(mapEdge.getwTo().getLocation());
+				
+				// only add the nodes that we have not yet explored to the queue
+				if (!visisted.contains(mapEdge.getwTo())) {
+					
+					queue.add(mapEdge.getwTo()); // put more nodes to explore
+					mapEdge.getwTo().setBackTrack(mapEdge.getwFrom()); // set backtrack to the previous node
+					
+					nodeSearched.accept(mapEdge.getwTo().getLocation());
+				}
+				
 			}
 
 		}
@@ -176,8 +187,11 @@ public class MapGraph {
 			path.add(node.getLocation());
 			node = node.getBackTrack();
 		}
-
-		return path;
+		
+		if (path.size() == 1)
+			return null;
+		else 
+			return path;
 	}
 
 	/**

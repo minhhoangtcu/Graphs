@@ -123,7 +123,7 @@ public abstract class Graph {
 		for (int i = 0; i < numVertices; i++) {
 			degreeOfVertices.add(getNeighbors(i).size() + getInNeighbors(i).size());
 		}
-		Collections.sort(degreeOfVertices);
+		Collections.sort(degreeOfVertices, Collections.reverseOrder());
 		return degreeOfVertices;
 	}
 	
@@ -132,7 +132,6 @@ public abstract class Graph {
 	 * @param v The starting vertex
 	 * @return A list of the vertices that can be reached in exactly two hops (by 
 	 * following two edges) from vertex v.
-	 * XXX: Implement in part 2 of week 1 for each subclass of Graph
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
