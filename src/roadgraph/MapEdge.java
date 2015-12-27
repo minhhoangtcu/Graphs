@@ -5,15 +5,12 @@ import geography.GeographicPoint;
 public class MapEdge {
 
 	private GeographicPoint from, to;
-	private MapNode wFrom, wTo;
 	private String roadName, roadType;
 	private double length;
 
-	public MapEdge(MapNode wFrom, MapNode wTo, String roadName, String roadType, double length) {
-		this.wFrom = wFrom;
-		this.wTo = wTo;
-		this.from = wFrom.getLocation();
-		this.to = wTo.getLocation();
+	public MapEdge(GeographicPoint from, GeographicPoint to, String roadName, String roadType, double length) {
+		this.from = from;
+		this.to = to;
 		this.roadName = roadName;
 		this.roadType = roadType;
 		this.length = length;
@@ -53,15 +50,4 @@ public class MapEdge {
 	public double getLength() {
 		return length;
 	}
-
-	public MapNode getwFrom() {
-		return wFrom;
-	}
-
-	public MapNode getwTo() {
-		return wTo;
-	}
-	
-	
-
 }

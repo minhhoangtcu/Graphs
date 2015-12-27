@@ -112,7 +112,7 @@ public class MapGraph {
 		if (from == null | to == null | !map.containsKey(from) | !map.containsKey(to) | length < 0) {
 			throw new IllegalArgumentException();
 		} else {
-			MapEdge edge = new MapEdge(map.get(from), map.get(to), roadName, roadType, length);
+			MapEdge edge = new MapEdge(from , to, roadName, roadType, length);
 			map.get(from).addEdge(edge);
 			numEdges++;
 		}
@@ -151,47 +151,59 @@ public class MapGraph {
 	public List<GeographicPoint> bfs(GeographicPoint start, GeographicPoint goal,
 			Consumer<GeographicPoint> nodeSearched) {
 
-		Queue<MapNode> queue = new LinkedList<>();
-		HashSet<MapNode> visisted = new HashSet<>();
+		Queue<GeographicPoint> queue = new LinkedList<>();
+		HashSet<GeographicPoint> visisted = new HashSet<>();
+		HashMap<GeographicPoint, GeographicPoint> backTrack = new HashMap<>();
 		
-		queue.add(map.get(start));
+		boolean isFound = false;
+		
+		queue.add(start);
+		visisted.add(start);
 
 		// Using breath first search to find the goal
-		MapNode node = null;
 		while (!queue.isEmpty()) {
-			node = queue.remove();
-			visisted.add(node);
+			GeographicPoint currentPoint = queue.poll();
 			
-			if (node.getLocation() == goal)
+//			System.out.println(String.format("Comparing goals \t current: %f %f \t goal: %f %f", currentPoint.x, currentPoint.y, goal.x, goal.y));
+			if (currentPoint == goal) {
+				isFound = true;
 				break; // we found the goal
+			}
 			
-			LinkedList<MapEdge> edgesToExplore = node.getEdges();
-			for (MapEdge mapEdge : edgesToExplore) {
+			LinkedList<GeographicPoint> pointsToExplores = map.get(currentPoint).getPoints();
+			for (GeographicPoint exploringPoint : pointsToExplores) {
 				
 				// only add the nodes that we have not yet explored to the queue
-				if (!visisted.contains(mapEdge.getwTo())) {
+				if (!visisted.contains(exploringPoint)) {
 					
-					queue.add(mapEdge.getwTo()); // put more nodes to explore
-					mapEdge.getwTo().setBackTrack(mapEdge.getwFrom()); // set backtrack to the previous node
+					queue.add(exploringPoint); // put more nodes to explore
+					backTrack.put(exploringPoint, currentPoint); // set backtrack to the previous node
+					visisted.add(exploringPoint);
 					
-					nodeSearched.accept(mapEdge.getwTo().getLocation());
+					nodeSearched.accept(exploringPoint);
 				}
 				
 			}
 
 		}
 		
-		// After finding the goal, backtrack to find the way back to the start node.
-		List<GeographicPoint> path = new LinkedList<>();
-		while (node != null) {
-			path.add(node.getLocation());
-			node = node.getBackTrack();
-		}
-		
-		if (path.size() == 1)
-			return null;
-		else 
+		if (!isFound)
+			return null; // if we cannot find a path, then we return null by default
+		else {
+			// After finding the goal, backtrack to find the way back to the start node.
+			List<GeographicPoint> path = new LinkedList<>();
+			GeographicPoint current = goal;
+			path.add(goal);
+			
+			while (backTrack.get(current) != null) {
+				
+				current = backTrack.get(current);
+				path.add(current);
+				
+			}
+			
 			return path;
+		}
 	}
 
 	/**
