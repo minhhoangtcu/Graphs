@@ -165,7 +165,7 @@ public class MapGraph {
 			GeographicPoint currentPoint = queue.poll();
 			
 //			System.out.println(String.format("Comparing goals \t current: %f %f \t goal: %f %f", currentPoint.x, currentPoint.y, goal.x, goal.y));
-			if (currentPoint == goal) {
+			if (currentPoint.equals(goal)) {
 				isFound = true;
 				break; // we found the goal
 			}
