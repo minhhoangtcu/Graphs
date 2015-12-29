@@ -1,10 +1,12 @@
 package basicgraph;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import util.GraphLoader;
 
@@ -119,12 +121,8 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		List<Integer> degreeOfVertices = new LinkedList<Integer>();
-		for (int i = 0; i < numVertices; i++) {
-			degreeOfVertices.add(getNeighbors(i).size() + getInNeighbors(i).size());
-		}
-		Collections.sort(degreeOfVertices, Collections.reverseOrder());
-		return degreeOfVertices;
+		// XXX: Implement in part 1 of week 1
+		return null;
 	}
 	
 	/**
@@ -132,6 +130,7 @@ public abstract class Graph {
 	 * @param v The starting vertex
 	 * @return A list of the vertices that can be reached in exactly two hops (by 
 	 * following two edges) from vertex v.
+	 * XXX: Implement in part 2 of week 1 for each subclass of Graph
 	 */
 	public abstract List<Integer> getDistance2(int v); 
 
@@ -144,7 +143,7 @@ public abstract class Graph {
 		if (numVertices <= 20) s += adjacencyString();
 		return s;
 	}
-	
+
 	/**
 	 * Generate string representation of adjacency list
 	 * @return the String
@@ -229,7 +228,7 @@ public abstract class Graph {
 
 	
 	public static void main (String[] args) {
-		GraphLoader.createIntersectionsFile("data/testdata/simpletest.map", "data/testdata/simpletest.intersections");
+		GraphLoader.createIntersectionsFile("data/maps/myucsd.map", "data/intersections/myucsd.intersections");
 		
 
 		// For testing of Part 1 functionality
@@ -251,7 +250,6 @@ public abstract class Graph {
 		
 		// You can test with real road data here.  Use the data files in data/maps
 		
-		System.out.println();
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
