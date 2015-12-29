@@ -1,0 +1,32 @@
+Class: MapGraph
+Modifications made to MapGraph (what and why):	
+Create 4 private members: 	
+numVertices:	to track the number of vertices
+numEdges:	to track the number of edges
+nodeMap:	to track the node(GeographicPoint), and its neighbors
+edgeMap:	to track the node and edges that from this node
+
+Implement the following original method:	
+Constructor:  initialize an empty graphmap
+getNumVertices(): return number of vertices(nodes)
+getVertices()	return a set of all vertices
+getNumEdges()	return number of edges
+addVertex()	add a vertex if valid, increase numVertices by 1
+addEdge()	add an edge, increase numEdge by 1
+bfs()	do broad first search, based on start and goal, return null if not found, or return a list of verticesif found.
+Added the following private method:	
+ constructBFSResult(): construct the list of vertices of the bfs search result
+
+Class name: MapEdge
+Purpose and description of class:	
+Contain the information of an edge:	
+roadName
+roadType
+length
+from
+to
+Contain all get and set method for the above private members
+
+
+Overall Design Justification (4-6 sentences):
+A vertex is just containing as much info as a GeographicPoint does right now, so it seems unnecessary to create a separate class for vertex. However, an edge contains more information, so it's better to create a separate class. It also allows to treat all the info of an edge as a whole unit rather than several piece of information.The rest methods are already created and all belong to the graph class, except for the private constructBFSResult() method in the MapGraph class, which is used to shorten the bfs method and make it more readable.
