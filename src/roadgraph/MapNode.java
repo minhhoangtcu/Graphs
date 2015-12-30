@@ -68,6 +68,15 @@ class MapNode implements Comparable
 		return edges;
 	}
 	
+	public double getDistanceToNode(MapNode node) {
+		for (MapEdge mapEdge : edges) {
+			if (mapEdge.getEndNode().equals(node)) {
+				return mapEdge.getLength();
+			}
+		}
+		throw new IllegalArgumentException("There is no edge connecting to the provided node");
+	}
+	
 	/** Returns whether two nodes are equal.
 	 * Nodes are considered equal if their locations are the same, 
 	 * even if their street list is different.
